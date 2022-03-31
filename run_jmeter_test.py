@@ -2,6 +2,7 @@
 
 import os
 import time
+from generate_report import generate_report
 
 root_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -29,7 +30,9 @@ def run_jmeter_test(jmx_path='jmx_path'):
     html_report_path = ''
     if os.path.isdir(jmx_path):
         print(f'参数是路径 {jmx_path}')
-        for file in os.listdir(jmx_path):
+        files = os.listdir(jmx_path)
+        files.sort()
+        for file in files:
             jmx_file = file  
             jmx_file_name = jmx_file.split('.')[0]
             print("jmx_file is {0}".format(jmx_file))
@@ -58,6 +61,9 @@ def run_jmeter_test(jmx_path='jmx_path'):
             jmeter_cmd = f'jmeter -n -t {test_jmx_path} -l {csv_report_filepath} -e -o {html_report_path}'
             print(jmeter_cmd)
             os.system(jmeter_cmd)
+    
+    output_path = os.path.join(report_path, 'output.csv')
+    generate_report(report_path, output_path) 
       
 
 if __name__ == '__main__':

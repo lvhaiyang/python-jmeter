@@ -20,8 +20,8 @@ def generate_ladder(source_jmx, output, threads=[10,20,30,40,50], duration=60):
         values = fp_src.readlines()
 
     file_name = os.path.split(source_jmx)[-1].split('.jmx')[0]
-    for thread in threads:
-        dst = os.path.join(output, f'{file_name}_t{thread}_d{duration}.jmx')
+    for i, thread in enumerate(threads):
+        dst = os.path.join(output, f'{i+1}_{file_name}_t{thread}_d{duration}.jmx')
         with open(dst, 'w') as fp_dst:
             for value in values:
                 if "ThreadGroup.on_sample_error" in value:
@@ -46,7 +46,7 @@ def generate_ladder(source_jmx, output, threads=[10,20,30,40,50], duration=60):
 if __name__=='__main__':
     source_jmx = os.path.join(root_path, 'jmx_path', 'demo', 'demo.jmx')
     output = os.path.join(root_path, 'jmx_path', 'demo_阶梯压测')
-    threads = [10, 20, 30, 40, 50]
+    threads = [1, 10, 20]
     duration=10
 
     generate_ladder(source_jmx, output, threads, duration)

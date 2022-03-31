@@ -19,13 +19,15 @@ def generate_report(report_dir, output_path):
     with open(output_path, 'w') as fp:
         csv_write = csv.writer(fp)
         csv_write.writerow(["名称", "并发数量", "持续时间(秒)", "Average", "Transactions/s", "Error %"])
-        for subdirectory in os.listdir(report_dir):
+        files = os.listdir(report_dir)
+        files.sort()
+        for subdirectory in files:
             # 判断是否是目录
             if os.path.isdir(os.path.join(report_dir, subdirectory)):
                 json_file_path = os.path.join(report_dir, subdirectory, 'statistics.json')
-                name = subdirectory.split('_')[0]
-                threads = subdirectory.split('_')[1].replace('t', '') + "并发"
-                duration = subdirectory.split('_')[2].replace('d', '') + "秒"
+                name = subdirectory.split('_')[1]
+                threads = subdirectory.split('_')[2].replace('t', '') + "并发"
+                duration = subdirectory.split('_')[3].replace('d', '') + "秒"
                 with open(json_file_path, 'r') as fp:
                     value = json.load(fp)['Total']
                     avg = round(value["meanResTime"], 2)
